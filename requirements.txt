@@ -1,0 +1,7 @@
+IPy
+gevent
+requests
+pymysql
+cx_Oracle
+pymongo
+psycopg2

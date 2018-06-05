@@ -87,7 +87,7 @@ class DBScanner(object):
 			sys.exit(1)
 		finally:
 			print '-'*55
-			print u'{}[+] 扫描完成耗时 {} 秒.{}'.format(O, time.time()-self.time, W) 
+#			print u'{}[+] 扫描完成耗时 {} 秒.{}'.format(O, time.time()-self.time, W) 
 
 def banner():
 	banner = '''
@@ -102,12 +102,21 @@ def banner():
 
 def main():
 	banner()
-	parser = argparse.ArgumentParser(description='Example: python {} 192.168.1.0/24'.format(sys.argv[0]))
-	parser.add_argument('target', help=u'192.168.1.0/24')
+	parser = argparse.ArgumentParser(description='Example: python {0} -i 192.168.1.0/24 \n\r or python {0} -f iplist.txt -t 30'.format(sys.argv[0]))
+#	parser.add_argument('target', help=u'192.168.1.0/24')
+	parser.add_argument('-i', type=str, default='', dest='target', help=u'扫描IP或IP段')
+	parser.add_argument('-f', type=str, default='', dest='file', help=u'IP清单文件')
 	parser.add_argument('-t', type=int, default=50, dest='thread', help=u'线程数(默认50)')
 	args   = parser.parse_args()
-	myscan = DBScanner(args.target, args.thread)
-	myscan.run()
+        if args.target:
+            myscan = DBScanner(args.target, args.thread)
+	    myscan.run()
+        if args.file:
+            with open(args.file, 'r') as fl:
+                for line in fl.readlines():
+                    ip = line.rstrip("\n")
+                    myscan = DBScanner(ip, args.thread)
+                    myscan.run()
 
 if __name__ == '__main__':
 	main()
