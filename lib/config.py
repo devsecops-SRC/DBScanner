@@ -2,23 +2,23 @@
 
 #扫描的服务类型及默认对口
 service = {'mssql':'1433',
-		   'oracle':'1521',
-		   'mysql':'3306',
-		   'postgresql':'5432',
+           'oracle':'1521',
+           'mysql':'3306',
+           'postgresql':'5432',
            'redis':'6379',
            'elasticsearch':'9200',
            'memcached':'11211',
            'mongodb':'27017'}
 
 passwd = ['123456','admin','root','password','123123','123','1','','{user}',
-		  '{user}{user}','{user}1','{user}123','{user}2018','{user}2017','{user}2016','{user}2015',
-		  '{user}#1','{user}#123','{user}#2018','{user}#2017','{user}#2016','{user}#2015',
-		  '{user}!','P@ssw0rd!!','P@ssw0rd','qwa123','12345678','test','123qwe!@#',
-		  '123456789','123321','1314520','666666','woaini','fuckyou','000000',
-		  '1234567890','8888888','qwerty','1qaz2wsx','abc123','abc123456',
-		  '1qaz!QAZ','1qaz@WSX','1234!@#$','Flzxsqc','asdfzxcv'
-		  '1q2w3e4r','123qwe','159357','p@ssw0rd','p@55w0rd','password!',
-		  'p@ssw0rd!','password1','r00t','system','111111','admin','toor']
+          '{user}{user}','{user}1','{user}123','{user}2018','{user}2017','{user}2016','{user}2015',
+          '{user}#1','{user}#123','{user}#2018','{user}#2017','{user}#2016','{user}#2015',
+          '{user}!','P@ssw0rd!!','P@ssw0rd','qwa123','12345678','test','123qwe!@#',
+          '123456789','123321','1314520','666666','woaini','fuckyou','000000',
+          '1234567890','8888888','qwerty','1qaz2wsx','abc123','abc123456',
+          '1qaz!QAZ','1qaz@WSX','1234!@#$','Flzxsqc','asdfzxcv'
+          '1q2w3e4r','123qwe','159357','p@ssw0rd','p@55w0rd','password!',
+          'p@ssw0rd!','password1','r00t','system','111111','admin','toor']
 
 #colour
 W = '\033[0m'
