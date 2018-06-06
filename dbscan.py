@@ -6,7 +6,6 @@
 #IP解析模块替换为ipaddr（子网网络地址错误时ipaddr仍可解析，IPy会报错）    2018.06.06 By:Shad0w
 
 import sys
-#import IPy
 import ipaddr
 import time
 import socket
