@@ -11,10 +11,12 @@
 * elasticsearch（扫描未授权访问）
 
 ## 参数
+```
   -h, --help  显示帮助文件
   -i IP       扫描IP或IP段
   -f FILE     IP清单文件
   -t THREAD   线程数(默认50)
+```
 
 ## 使用方法
 使用Python2运行
