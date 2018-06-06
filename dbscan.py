@@ -2,8 +2,12 @@
 #coding:utf-8
 #Author:se55i0n
 #针对常见sql、No-sql数据库进行安全检查
+#增加从文件读取IP或命令行读取IP的参数    2018.06.05 By:Shad0w
+#IP解析模块替换为ipaddr（子网网络地址错误时ipaddr仍可解析，IPy会报错）    2018.06.06 By:Shad0w
+
 import sys
-import IPy
+#import IPy
+import ipaddr
 import time
 import socket
 import gevent
@@ -16,34 +20,37 @@ from lib.exploit import *
 monkey.patch_all()
 
 class DBScanner(object):
-    def __init__(self, target, thread):
-        self.target = target
+    def __init__(self, ips, thread):
+        # self.target = target
         self.thread = thread
-        self.ips    = []
+        # self.ips    = []
+        self.ips    = ips
         self.ports  = []
         self.time   = time.time()
-        self.get_ip()
+        # self.get_ip()
         self.get_port()
         self.check = check()
     
-    def get_ip(self):
-        #获取待扫描地址段
-        for ip in IPy.IP(self.target):
-            self.ips.append(str(ip))
+    # def get_ip(self):
+    #     #获取待扫描地址段
+    #     for ip in IPy.IP(self.target):
+    #         self.ips.append(str(ip))
 
     def get_port(self):
         self.ports = list(p for p in service.itervalues())
 
+
     def scan(self, ip, port):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(0.2)
+            s.settimeout(1)
             if s.connect_ex((ip, port)) == 0:
                 self.handle(ip, port)
         except Exception as e:
             pass
         finally:
             s.close()
+
 
     def handle(self, ip, port):
         for v,k in service.iteritems():
@@ -62,8 +69,9 @@ class DBScanner(object):
                     self.check.mongodb(ip)
                 elif v == 'memcached':
                     self.check.memcached(ip)
-                else:
+                elif v == 'elasticsearch':
                     self.check.elasticsearch(ip)
+                
 
     def start(self, ip):
         try:
@@ -73,6 +81,7 @@ class DBScanner(object):
             gevent.joinall(gevents)
         except Exception as e:
             pass
+#        print("IP:{}\t\t完成扫描".format(ip))
 
     def run(self):
         try:
@@ -87,7 +96,7 @@ class DBScanner(object):
             sys.exit(1)
         finally:
             print('-'*55)
-#            print(u'{}[+] 扫描完成耗时 {} 秒.{}'.format(O, time.time()-self.time, W))
+            print(u'{}[+] 扫描完成耗时 {} 秒.{}'.format(O, time.time()-self.time, W))
 
 def banner():
     banner = '''
@@ -104,19 +113,33 @@ def main():
     banner()
     parser = argparse.ArgumentParser(description='Example: python {0} -i 192.168.1.0/24 \n\r or python {0} -f iplist.txt -t 30'.format(sys.argv[0]))
 #    parser.add_argument('target', help=u'192.168.1.0/24')
-    parser.add_argument('-i', type=str, default='', dest='target', help=u'扫描IP或IP段')
+    parser.add_argument('-i', type=str, default='', dest='ip', help=u'扫描IP或IP段')
     parser.add_argument('-f', type=str, default='', dest='file', help=u'IP清单文件')
     parser.add_argument('-t', type=int, default=50, dest='thread', help=u'线程数(默认50)')
     args   = parser.parse_args()
-    if args.target:
-        myscan = DBScanner(args.target, args.thread)
+    if args.ip:
+        ips = []
+        try:
+            ipxx = ipaddr.IPNetwork(args.ip)
+        except ValueError:
+            raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %args.ip)
+        for ip in ipxx:
+            ips.append(str(ip))
+        myscan = DBScanner(ips, args.thread)
         myscan.run()
     if args.file:
+        ips = []
         with open(args.file, 'r') as fl:
             for line in fl.readlines():
-                ip = line.rstrip("\n")
-                myscan = DBScanner(ip, args.thread)
-                myscan.run()
+                ipx = line.rstrip("\n")
+                try:
+                    ipxx = ipaddr.IPNetwork(ipx)
+                except ValueError:
+                    raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %args.ip)
+                for ip in ipxx:
+                    ips.append(str(ip))
+        myscan = DBScanner(ips, args.thread)
+        myscan.run()
 
 if __name__ == '__main__':
     main()
