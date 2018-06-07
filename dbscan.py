@@ -92,8 +92,12 @@ class DBScanner(object):
             print(u'\n{}[-] 用户终止扫描...{}'.format(R, W))
             sys.exit(1)
         finally:
-            print('-'*55)
-            print(u'{}[+] 扫描完成耗时 {} 秒.{}'.format(O, time.time()-self.time, W))
+            print('-' * 55)
+            print(u'{}[+] stop at {},扫描耗时 {} 秒.{}'.format(O, time.asctime(), time.time()-self.time, W))
+            with open('weakpass.txt', 'a+') as f:
+            	f.write("-" * 70 + "\n")
+            	f.write('[+] stop at {},扫描耗时 {} 秒.\r\n\r\n'.format(time.asctime(), time.time()-self.time))
+
 
 
 def banner():
@@ -127,8 +131,8 @@ def main():
             pass
 
         with open('weakpass.txt', 'a+') as f:
-            f.write("--" * 20 + "\n")
-            f.write('start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
+            f.write("+" * 70 + "\r\n")
+            f.write('[+] start at {},共扫描{}个IP.\r\n\r\n'.format(time.asctime(), len(ips)))
         print(u'start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
         myscan = DBScanner(ips, args.thread)
         myscan.run()
@@ -147,8 +151,8 @@ def main():
                     pass
 
         with open('weakpass.txt', 'a+') as f:
-            f.write("--" * 20+ "\n")
-            f.write('start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
+            f.write("+" * 70 + "\r\n")
+            f.write('[+] start at {},共扫描{}个IP.\r\n\r\n'.format(time.asctime(), len(ips)))
         print(u'start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
         myscan = DBScanner(ips, args.thread)
         myscan.run()
