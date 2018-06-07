@@ -21,7 +21,7 @@ monkey.patch_all()
 class DBScanner(object):
     def __init__(self, ips, thread):
         # self.target = target
-        self.thread = thread
+        self.thread = int(thread)
         # self.ips    = []
         self.ips    = ips
         self.ports  = []
@@ -56,7 +56,7 @@ class DBScanner(object):
             if k == str(port):
                 if v == 'mysql':
                     self.check.mysql(ip)
-                elif v == 'mssql':
+                if v == 'mssql':
                     self.check.mssql(ip)
                 elif v == 'oracle':
                     self.check.oracle(ip)
@@ -80,7 +80,7 @@ class DBScanner(object):
             gevent.joinall(gevents)
         except Exception as e:
             pass
-#        print("IP:{}\t\t完成扫描".format(ip))
+        print("IP:{}\t\t完成扫描".format(ip))
 
     def run(self):
         try:
@@ -120,23 +120,33 @@ def main():
         ips = []
         try:
             ipxx = ipaddr.IPNetwork(args.ip)
+            for ip in ipxx:
+                ips.append(str(ip))
         except ValueError:
             raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %args.ip)
-        for ip in ipxx:
-            ips.append(str(ip))
+        with open('weakpass.txt', 'a+') as f:
+            f.write("--" * 20 + "\n")
+            f.write('start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
+        print(u'start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
         myscan = DBScanner(ips, args.thread)
         myscan.run()
+
     if args.file:
         ips = []
         with open(args.file, 'r') as fl:
             for line in fl.readlines():
-                ipx = line.rstrip("\n")
+                ipx = line.rstrip("\n\r")
                 try:
                     ipxx = ipaddr.IPNetwork(ipx)
+                    for ip in ipxx:
+                        ips.append(str(ip))
                 except ValueError:
-                    raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %args.ip)
-                for ip in ipxx:
-                    ips.append(str(ip))
+                    raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %ipx)
+
+        with open('weakpass.txt', 'a+') as f:
+            f.write("--" * 20+ "\n")
+            f.write('start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
+        print(u'start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
         myscan = DBScanner(ips, args.thread)
         myscan.run()
 
