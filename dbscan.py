@@ -4,6 +4,7 @@
 #针对常见sql、No-sql数据库进行安全检查
 #增加从文件读取IP或命令行读取IP的参数    2018.06.05 By:Shad0w
 #IP解析模块替换为ipaddr（子网网络地址错误时ipaddr仍可解析，IPy会报错）    2018.06.06 By:Shad0w
+#增加MySQL连接超时时间为10s      2018.06.07 By:Shad0w
 
 import sys
 import ipaddr
@@ -30,10 +31,6 @@ class DBScanner(object):
         self.get_port()
         self.check = check()
     
-    # def get_ip(self):
-    #     #获取待扫描地址段
-    #     for ip in IPy.IP(self.target):
-    #         self.ips.append(str(ip))
 
     def get_port(self):
         self.ports = list(p for p in service.itervalues())
@@ -82,6 +79,7 @@ class DBScanner(object):
             pass
         print("IP:{}\t\t完成扫描".format(ip))
 
+
     def run(self):
         try:
             pool = ThreadPool(processes=self.thread)
@@ -97,6 +95,7 @@ class DBScanner(object):
             print('-'*55)
             print(u'{}[+] 扫描完成耗时 {} 秒.{}'.format(O, time.time()-self.time, W))
 
+
 def banner():
     banner = '''
     ____  ____ _____
@@ -107,6 +106,7 @@ def banner():
     '''
     print(B + banner + W)
     print('-'*55)
+
 
 def main():
     banner()
@@ -122,8 +122,10 @@ def main():
             ipxx = ipaddr.IPNetwork(args.ip)
             for ip in ipxx:
                 ips.append(str(ip))
-        except ValueError:
-            raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %args.ip)
+        except Exception as e:
+            print(e)
+            pass
+
         with open('weakpass.txt', 'a+') as f:
             f.write("--" * 20 + "\n")
             f.write('start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
@@ -140,8 +142,9 @@ def main():
                     ipxx = ipaddr.IPNetwork(ipx)
                     for ip in ipxx:
                         ips.append(str(ip))
-                except ValueError:
-                    raise validation.ValidationError('%s is not a valid IPv4 or IPv6 subnet' %ipx)
+                except Exception as e:
+                    print(e)
+                    pass
 
         with open('weakpass.txt', 'a+') as f:
             f.write("--" * 20+ "\n")
