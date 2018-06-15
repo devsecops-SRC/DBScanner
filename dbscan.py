@@ -5,6 +5,8 @@
 #增加从文件读取IP或命令行读取IP的参数    2018.06.05 By:Shad0w
 #IP解析模块替换为ipaddr（子网网络地址错误时ipaddr仍可解析，IPy会报错）    2018.06.06 By:Shad0w
 #增加MySQL连接超时时间为10s      2018.06.07 By:Shad0w
+#增加Socket连接超时时间为10      2018.06.15 By:Shad0w
+#增加Hadoop和ZooKeeper未授权访问检测      2018.06.15 By:Shad0w
 
 import sys
 import ipaddr
