@@ -8,7 +8,10 @@ service = {'mssql':'1433',
            'redis':'6379',
            'elasticsearch':'9200',
            'memcached':'11211',
-           'mongodb':'27017'}
+           'mongodb':'27017',
+           'hadoop_namenode':'50070',
+           'hadoop_resourcemanager':'8088',
+           'zookeeper':'2181'}
 
 passwd = ['123456','admin','root','password','123123','123','1','','{user}',
           '{user}{user}','{user}1','{user}123','{user}2018','{user}2017','{user}2016','{user}2015',

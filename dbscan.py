@@ -39,7 +39,7 @@ class DBScanner(object):
     def scan(self, ip, port):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(1)
+            s.settimeout(0.2)
             if s.connect_ex((ip, port)) == 0:
                 self.handle(ip, port)
         except Exception as e:
@@ -67,7 +67,12 @@ class DBScanner(object):
                     self.check.memcached(ip)
                 elif v == 'elasticsearch':
                     self.check.elasticsearch(ip)
-                
+                elif v == 'hadoop_namenode':
+                    self.check.hadoop_namenode(ip)
+                elif v == 'hadoop_resourcemanager':
+                    self.check.hadoop_resourcemanager(ip)
+                elif v == 'zookeeper':
+                    self.check.zookeeper(ip)
 
     def start(self, ip):
         try:
