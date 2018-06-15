@@ -9,6 +9,9 @@
 * mongodb（扫描未授权访问）
 * memcached（扫描未授权访问）
 * elasticsearch（扫描未授权访问）
+* hadoop（扫描未授权访问）
+* zookeeper（扫描未授权访问）
+
 
 ## 参数
 ```
