@@ -1,5 +1,9 @@
 #coding:utf-8
 
+
+#socket连接超时时间
+timeout = 10
+
 #扫描的服务类型及默认对口
 service = {'mssql':'1433',
            'oracle':'1521',
