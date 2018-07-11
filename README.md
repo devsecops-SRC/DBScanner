@@ -22,7 +22,14 @@
 ```
 
 ## 使用方法
-使用Python2运行
+该脚本使用Python2运行
+
+安装模块
+```
+pip install -r requirements.txt
+```
+
+执行扫描
 ```
 python dbscan.py -f iplist.txt
 or
