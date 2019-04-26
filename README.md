@@ -1,6 +1,6 @@
 # DBScanner
 
-自动扫描内网常见sql、no-sql数据库脚本未授权访问及常规弱口令检测
+自动扫描内网常见sql、no-sql数据库未授权访问漏洞及常规弱口令检测
 * mysql（扫描root账号弱口令）
 * mssql（扫描sa账号弱口令）
 * oracle（扫描system/sys/scott等账号弱口令）
