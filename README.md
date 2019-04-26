@@ -29,16 +29,18 @@
 pip install -r requirements.txt
 ```
 
-* Oracle需要安装客户端支持
+* Oracle需要安装客户端支持  
 https://oracle.github.io/odpi/doc/installation.html#macos
 https://www.zhihu.com/question/19629769/answer/123755085
 
 
 * ZooKeeper
-需安装Zookeeper客户端
-Ubuntu or Kali
+需安装Zookeeper客户端  
+Ubuntu or Kali  
+```
 sudo apt install zookeeper
-或下载官方发布的压缩包文件，解压后使用，根据实际情况修改代码中路径
+```  
+或下载官方发布的压缩包文件，解压后使用，根据实际情况修改代码中路径  
 https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/current/
 
 
