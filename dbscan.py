@@ -2,12 +2,14 @@
 #coding:utf-8
 #Author:se55i0n
 #针对常见sql、No-sql数据库进行安全检查
-#增加从文件读取IP或命令行读取IP的参数    2018.06.05 By:Shad0w
-#IP解析模块替换为ipaddr（子网网络地址错误时ipaddr仍可解析，IPy会报错）    2018.06.06 By:Shad0w
-#增加MySQL连接超时时间为10s      2018.06.07 By:Shad0w
-#增加Socket连接超时时间为10s      2018.06.15 By:Shad0w
-#增加Hadoop和ZooKeeper未授权访问检测      2018.06.15 By:Shad0w
-#修改Zookeeper未授权访问检测方式，"echo envi"方式检测存在误报，修改为调用系统命令执行zkCli.sh获取结果（需在Linux系统下使用）    2018.9.18 By:Shad0w
+#增加从文件读取IP或命令行读取IP的参数    2018.06.05 By:Shad0wpf
+#IP解析模块替换为ipaddr（子网网络地址错误时ipaddr仍可解析，IPy会报错）    2018.06.06 By:Shad0wpf
+#增加MySQL连接超时时间为10s      2018.06.07 By:Shad0wpf
+#增加Socket连接超时时间为10s      2018.06.15 By:Shad0wpf
+#增加Hadoop和ZooKeeper未授权访问检测      2018.06.15 By:Shad0wpf
+#修改Zookeeper未授权访问检测方式，"echo envi"方式检测存在误报，修改为调用系统命令执行zkCli.sh获取结果（需在Linux系统下使用）    2018.9.18 By:Shad0wpf
+#修复一个屏幕打印乱码问题     2018.3.29  By:Shad0wpf
+#修改MongoDB未授权访问检测方式，Pymongo库不支持2.6之前版本Mongodb，存在漏报    2019.04.17  By:Shad0wpf
 
 import sys
 import ipaddr
@@ -24,13 +26,10 @@ monkey.patch_all()
 
 class DBScanner(object):
     def __init__(self, ips, thread):
-        # self.target = target
         self.thread = int(thread)
-        # self.ips    = []
         self.ips    = ips
         self.ports  = []
         self.time   = time.time()
-        # self.get_ip()
         self.get_port()
         self.check = check()
     
@@ -85,7 +84,7 @@ class DBScanner(object):
             gevent.joinall(gevents)
         except Exception as e:
             pass
-        print("IP:{}\t\t完成扫描".format(ip))
+        print(u"IP:{}\t\t完成扫描".format(ip))
 
 
     def run(self):
@@ -107,7 +106,6 @@ class DBScanner(object):
             	f.write('[+] stop at {},扫描耗时 {} 秒.\r\n\r\n'.format(time.asctime(), time.time()-self.time))
 
 
-
 def banner():
     banner = '''
     ____  ____ _____
@@ -123,7 +121,6 @@ def banner():
 def main():
     banner()
     parser = argparse.ArgumentParser(description='Example: python {0} -i 192.168.1.0/24 \n\r or python {0} -f iplist.txt -t 30'.format(sys.argv[0]))
-#    parser.add_argument('target', help=u'192.168.1.0/24')
     parser.add_argument('-i', type=str, default='', dest='ip', help=u'扫描IP或IP段')
     parser.add_argument('-f', type=str, default='', dest='file', help=u'IP清单文件')
     parser.add_argument('-t', type=int, default=50, dest='thread', help=u'线程数(默认50)')
@@ -164,6 +161,7 @@ def main():
         print(u'start at {},共扫描{}个IP.\r\n'.format(time.asctime(), len(ips)))
         myscan = DBScanner(ips, args.thread)
         myscan.run()
+
 
 if __name__ == '__main__':
     main()
