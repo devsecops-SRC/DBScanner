@@ -33,6 +33,8 @@ pip install -r requirements.txt
 https://oracle.github.io/odpi/doc/installation.html#macos
 https://www.zhihu.com/question/19629769/answer/123755085
 
+* psycopg2安装报错，需先安装postgresql-server-dev-x.x
+apt install postgresql-server-dev-9.5 
 
 * ZooKeeper
 需安装Zookeeper客户端  
